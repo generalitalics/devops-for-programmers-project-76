@@ -4,10 +4,9 @@
   become_method: sudo
   
   tasks:
-    - apt:
-        name: python3-pip
-        update_cache: yes
-        cache_valid_time: 604800 # 1 week
+    - name: Ставим pip
+      import_role:
+        name: geerlingguy.pip
     
     - name: Ставим Docker
       import_role:
@@ -15,12 +14,33 @@
 
     - pip:
         name: docker
+    
+    - name: Copy nginx config file
+      ansible.builtin.copy:
+        src: nginx.conf
+        dest: ./nginx1.conf
 
     - community.docker.docker_container:
-        name: app
+        name: nginx-proxy
+        image: nginx
+        restart_policy: always
+        state: started
+        ports:
+          - 80:80
+          - 443:443
+        volumes:
+          - ./nginx.conf:/etc/nginx/conf.d/default.conf
+          - /srv/docker/redmine/redmine/certs:/etc/nginx/certs
+        networks:
+          - name: my_network
+
+    - community.docker.docker_container:
+        name: redmine
         # Обязательно указываем тег, который хотим деплоить
         # Если образа на сервере нет, Ansible его автоматически скачает
-        image: "hexletcomponents/devops-example-app:{{ version }}"
+        image: redmine
+        # networks:
+        #   - name: my_network
         # Подключаем супервизор
         # Если контейнер остановится, например, из-за ошибок
         # супервизор Docker его перезапустит
@@ -32,3 +52,6 @@
           - 3000:3000
         env: # Настраиваем
           NODE_ENV: production
+          REDMINE_HTTPS: "true"
+        networks:
+          - name: my_network
