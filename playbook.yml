@@ -18,13 +18,18 @@
     - name: Copy nginx config file
       ansible.builtin.copy:
         src: nginx.conf
-        dest: ./nginx1.conf
+        dest: ./nginx.conf
+
+    - name: Create a network
+      community.docker.docker_network:
+        name: my_network
 
     - community.docker.docker_container:
         name: nginx-proxy
         image: nginx
         restart_policy: always
         state: started
+        # env_file: /.env
         ports:
           - 80:80
           - 443:443
@@ -39,8 +44,6 @@
         # Обязательно указываем тег, который хотим деплоить
         # Если образа на сервере нет, Ansible его автоматически скачает
         image: redmine
-        # networks:
-        #   - name: my_network
         # Подключаем супервизор
         # Если контейнер остановится, например, из-за ошибок
         # супервизор Docker его перезапустит
@@ -53,5 +56,15 @@
         env: # Настраиваем
           NODE_ENV: production
           REDMINE_HTTPS: "true"
+          REDMINE_DB_POSTGRES: "{{REDMINE_DB_POSTGRES}}"
+          REDMINE_DB_PORT: "{{REDMINE_DB_PORT}}"
+          REDMINE_DB_DATABASE: "{{REDMINE_DB_DATABASE}}"
+          REDMINE_DB_USERNAME: "{{REDMINE_DB_USERNAME}}"
+          REDMINE_DB_PASSWORD: "{{REDMINE_DB_PASSWORD}}"
         networks:
           - name: my_network
+- hosts: webservers
+  become: true
+  name: Run datadog agent
+  roles: 
+    - role: datadog.datadog
