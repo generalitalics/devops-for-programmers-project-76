@@ -4,15 +4,8 @@
   become_method: sudo
   
   tasks:
-    - name: Ставим pip
-      import_role:
-        name: geerlingguy.pip
-    
-    - name: Ставим Docker
-      import_role:
-        name: geerlingguy.docker
-
-    - pip:
+    - name: install pip docker
+      ansible.builtin.pip:
         name: docker
     
     - name: Copy nginx config file
