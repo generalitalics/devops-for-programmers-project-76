@@ -8,6 +8,11 @@
       ansible.builtin.pip:
         name: docker
     
+    - name: Create directory
+      file:
+        path: /nginx
+        state: directory
+
     - name: Copy nginx config file
       ansible.builtin.copy:
         src: nginx.conf
