@@ -36,7 +36,7 @@
           - name: my_network
 
     - community.docker.docker_container:
-        name: redmineт
+        name: redmine
         image: redmine
         restart_policy: always
         state: started
