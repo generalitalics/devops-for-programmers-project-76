@@ -23,6 +23,9 @@
 
     - name: Find out playbook's path
       shell: pwd
+      
+    - name: Find out playbook's path
+      shell: ls
     
     - community.docker.docker_container:
         name: nginx-proxy
