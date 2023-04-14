@@ -8,10 +8,10 @@
       ansible.builtin.pip:
         name: docker
     
-#     - name: Create directory
-#       file:
-#         path: /nginx
-#         state: directory
+    - name: Create directory
+      file:
+        path: /home/genralitalics/nginx
+        state: directory
 
     - name: Copy nginx config file
       ansible.builtin.copy:
