@@ -21,6 +21,9 @@
     - community.docker.docker_network:
         name: my_network
 
+    - name: Find out playbook's path
+      shell: pwd
+    
     - community.docker.docker_container:
         name: nginx-proxy
         image: nginx
