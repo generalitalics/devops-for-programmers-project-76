@@ -7,27 +7,13 @@
     - name: install pip docker
       ansible.builtin.pip:
         name: docker
-    
-#     - name: Create directory
-#       file:
-#         path: /home/genralitalics/nginx
-#         state: directory
 
-#     - name: Copy nginx config file
-#       ansible.builtin.copy:
-#         src: /project/code/nginx.conf
-#         dest: /home/nginx.conf
-
-    - community.docker.docker_network:
+    - name: add network
+      community.docker.docker_network:
         name: my_network
-
-    - name: Find out playbook's path
-      shell: pwd
-      
-    - name: Find out playbook's path
-      shell: ls
     
-    - community.docker.docker_container:
+    - name: create docker nginx
+      community.docker.docker_container:
         name: nginx-proxy
         image: nginx
         restart_policy: always
@@ -42,7 +28,8 @@
         networks:
           - name: my_network
 
-    - community.docker.docker_container:
+    - name: create redmine nginx 
+      community.docker.docker_container:
         name: redmine
         image: redmine
         restart_policy: always
