@@ -10,7 +10,7 @@
     
     - name: Create directory
       file:
-        path: ./nginx
+        path: /nginx
         state: directory
 
     - name: Copy nginx config file
