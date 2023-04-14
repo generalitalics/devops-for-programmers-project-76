@@ -28,7 +28,7 @@
         networks:
           - name: my_network
 
-    - name: create redmine nginx 
+    - name: create docker redmine 
       community.docker.docker_container:
         name: redmine
         image: redmine
