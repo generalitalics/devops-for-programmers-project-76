@@ -13,10 +13,10 @@
 #         path: /home/genralitalics/nginx
 #         state: directory
 
-    - name: Copy nginx config file
-      ansible.builtin.copy:
-        src: /project/code/nginx.conf
-        dest: /home/nginx.conf
+#     - name: Copy nginx config file
+#       ansible.builtin.copy:
+#         src: /project/code/nginx.conf
+#         dest: /home/nginx.conf
 
     - community.docker.docker_network:
         name: my_network
